@@ -72,7 +72,20 @@ export const addPost = async (req, res) => {
     const user_id = req.user.id; // from token
     const image = req.file ? req.file.path : null; // Cloudinary gives full URL
 
-    console.log(image);
+    console.log(
+      "Post data:",
+      JSON.stringify(
+        {
+          user_id: req.user?.id,
+          title,
+          content,
+          image,
+        },
+        null,
+        2
+      )
+    );
+
     const newPost = await createPost(user_id, title, content, image);
     res
       .status(201)
