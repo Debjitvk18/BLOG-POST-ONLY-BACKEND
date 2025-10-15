@@ -70,7 +70,8 @@ export const addPost = async (req, res) => {
   try {
     const { title, content } = req.body;
     const user_id = req.user.id; // from token
-    const image = req.file ? `/uploads/${req.file.filename}` : null;
+    const image = req.file ? req.file.path : null; // Cloudinary gives full URL
+
     console.log(image);
     const newPost = await createPost(user_id, title, content, image);
     res
@@ -89,7 +90,7 @@ export const editPost = async (req, res) => {
     const { title, content } = req.body;
     console.log(req.body.image);
     const image = req.file
-      ? `/uploads/${req.file.filename}`
+      ? req.file.path // Cloudinary URL
       : req.body.image !== undefined
       ? req.body.image
       : null;
@@ -127,11 +128,9 @@ export const fetchOtherPosts = async (req, res) => {
 
     res.json(result);
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        message: "Error fetching other users' posts",
-        error: err.message,
-      });
+    res.status(500).json({
+      message: "Error fetching other users' posts",
+      error: err.message,
+    });
   }
 };
