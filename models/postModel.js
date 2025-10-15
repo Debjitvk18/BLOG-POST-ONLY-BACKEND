@@ -46,6 +46,7 @@ export const createPost = async (user_id, title, content, image) => {
      RETURNING *`,
     [user_id, title, content, image]
   );
+  
   return rows[0];
 };
 
